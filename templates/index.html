@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Smart College Network</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand-mark">SCN</div>
+    <div>
+      <p class="eyebrow">NETWORK LAB · ROUTING SIMULATOR</p>
+      <h1>Smart College Network</h1>
+    </div>
+    <span class="status"><span class="status-dot"></span> Local simulation</span>
+  </header>
+
+  <main class="page">
+    <section class="hero">
+      <div>
+        <p class="eyebrow">CAMPUS NETWORK CONTROL CENTER</p>
+        <h2>Explore routes.<br><span>Understand the network.</span></h2>
+        <p class="hero-copy">Run routing algorithms on a sample college topology, inspect routing tables, and test what happens when a link fails.</p>
+      </div>
+      <div class="hero-stats">
+        <div><strong id="router-count">—</strong><span>Routers</span></div>
+        <div><strong id="link-count">—</strong><span>Links</span></div>
+        <div><strong id="subnet-count">—</strong><span>Department networks</span></div>
+      </div>
+    </section>
+
+    <section class="layout">
+      <div class="panel topology-panel">
+        <div class="panel-heading">
+          <div><p class="eyebrow">LIVE TOPOLOGY</p><h3>Campus network map</h3></div>
+          <span class="legend"><i></i> Active link <b></b> Selected route</span>
+        </div>
+        <div class="map-wrap">
+          <svg id="network-map" viewBox="0 0 880 560" role="img" aria-label="College router topology"></svg>
+        </div>
+        <p class="hint">Line labels are link costs. Select an algorithm below to highlight its result.</p>
+      </div>
+
+      <aside class="panel controls-panel">
+        <p class="eyebrow">ROUTING CONTROLS</p>
+        <h3>Run an algorithm</h3>
+        <label for="source">Source router</label>
+        <select id="source"></select>
+        <label for="destination">Destination router</label>
+        <select id="destination"></select>
+        <label for="packet-size">Packet size (bytes)</label>
+        <input id="packet-size" type="number" min="1" max="10000000" value="1500" inputmode="numeric">
+        <p class="tiny-note">Used only for the estimated one-way transmission-time calculation.</p>
+        <div class="button-stack">
+          <button id="dijkstra-btn" class="btn btn-primary">Find shortest path <span>↗</span></button>
+          <button id="dv-btn" class="btn btn-secondary">Run Distance Vector</button>
+          <button id="broadcast-btn" class="btn btn-secondary">Build broadcast tree</button>
+        </div>
+        <div class="divider"></div>
+        <label for="failed-link">Link failure test</label>
+        <select id="failed-link"><option value="">No failed link</option></select>
+        <button id="failure-btn" class="btn btn-warning">Simulate link failure</button>
+        <button id="reset-btn" class="btn btn-quiet">Reset topology</button>
+        <p class="tiny-note">Failure is simulated in the Python model only; it does not alter a Packet Tracer file or real network.</p>
+      </aside>
+    </section>
+
+    <section class="results-grid">
+      <article class="panel result-panel">
+        <div class="panel-heading"><div><p class="eyebrow">ALGORITHM OUTPUT</p><h3 id="result-title">Ready when you are</h3></div><span id="result-pill" class="pill">Idle</span></div>
+        <div id="result-content" class="result-content empty-state">Choose an algorithm to see its output here.</div>
+      </article>
+      <article class="panel result-panel">
+        <div class="panel-heading"><div><p class="eyebrow">NETWORK REFERENCE</p><h3>Department subnets</h3></div></div>
+        <div class="table-scroll">
+          <table><thead><tr><th>Department</th><th>Network</th><th>Gateway</th></tr></thead><tbody id="subnet-table"></tbody></table>
+        </div>
+      </article>
+    </section>
+
+    <section class="panel explainer">
+      <p class="eyebrow">QUICK GUIDE</p>
+      <div class="guide-grid">
+        <div><span class="guide-number">01</span><h4>Dijkstra</h4><p>Finds the least-cost path between a source and destination router.</p></div>
+        <div><span class="guide-number">02</span><h4>Distance Vector</h4><p>Routers exchange route estimates until the routing tables stabilize.</p></div>
+        <div><span class="guide-number">03</span><h4>Broadcast tree</h4><p>Builds a breadth-first spanning tree so each reachable router is visited once.</p></div>
+      </div>
+      <p class="disclaimer">Educational simulator: link costs are sample weights, not measured latency. The Python algorithms are demonstrations and are separate from Cisco Packet Tracer's routing engine.</p>
+    </section>
+    <footer>SMART COLLEGE NETWORK <span>·</span> Routing Algorithms Mini Project</footer>
+  </main>
+  <script src="{{ url_for('static', filename='app.js') }}"></script>
+</body>
+</html>
